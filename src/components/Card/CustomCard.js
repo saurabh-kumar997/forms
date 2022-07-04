@@ -12,31 +12,9 @@ import { Divider, Grid } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Select from "../Select";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CustomCardContent from "./CardContent";
 
 export default function CustomCard() {
-  const options = [
-    {
-      label: "Simple Text",
-      value: "Simple Text",
-    },
-    {
-      label: "Paragraph",
-      value: "Paragraph",
-    },
-    {
-      label: "Multiple Choice",
-      value: "MultipleChoice",
-    },
-    {
-      label: "Dropdown",
-      value: "Dropdown",
-    },
-    {
-      label: "Date",
-      value: "Date",
-    },
-  ];
-
   return (
     <Card>
       <CardHeader
@@ -48,22 +26,7 @@ export default function CustomCard() {
         title="Question"
       />
       <CardContent>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={12} md={9}>
-            <Input name="Question" type="text" required label={"Question"} />
-          </Grid>
-          <Grid item xs={12} sm={12} md={3}>
-            <Select options={options} label="Type" name={"type"} />
-          </Grid>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12}>
-          <Input
-            name="Description"
-            type="text"
-            required
-            label={"Description"}
-          />
-        </Grid>
+        <CustomCardContent />
       </CardContent>
       <Divider />
       <CardActions disableSpacing>

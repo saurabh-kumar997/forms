@@ -11,6 +11,7 @@ const Input = ({
   error,
   label,
   required,
+  rest,
 }) => {
   return (
     <TextField
@@ -24,6 +25,7 @@ const Input = ({
       onChange={onChange}
       required={required}
       fullWidth
+      {...rest}
     />
   );
 };
