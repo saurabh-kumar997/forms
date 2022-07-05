@@ -14,19 +14,17 @@ import Select from "../Select";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CustomCardContent from "./CardContent";
 
-export default function CustomCard() {
+export default function CustomCard({ ...rest }) {
+  const { question, handleRequiredSwitch } = rest;
+  console.log(question);
   return (
     <Card>
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            Q
-          </Avatar>
-        }
+        avatar={<Avatar sx={{ bgcolor: red[500] }}>Q</Avatar>}
         title="Question"
       />
       <CardContent>
-        <CustomCardContent />
+        <CustomCardContent {...rest} />
       </CardContent>
       <Divider />
       <CardActions disableSpacing>
@@ -41,7 +39,11 @@ export default function CustomCard() {
           </Grid>
           <Divider orientation="vertical" flexItem />
           <Grid item>
-            <CustomSwitch label="Required" />
+            <CustomSwitch
+              label="Required"
+              checked={question.isRequired}
+              onChange={handleRequiredSwitch}
+            />
           </Grid>
         </Grid>
       </CardActions>

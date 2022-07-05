@@ -34,12 +34,8 @@ const Select = ({
   );
 };
 
-const SelectTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-};
 Select.propTypes = {
-  options: PropTypes.arrayOf(SelectTypes),
+  options: PropTypes.array,
   onChange: PropTypes.func,
   error: PropTypes.bool,
   value: PropTypes.string,
