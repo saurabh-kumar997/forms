@@ -14,15 +14,19 @@ import Select from "../Select";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CustomCardContent from "./CardContent";
 
-export default function CustomCard({ ...rest }) {
-  const { question, handleRequiredSwitch } = rest;
-  console.log(question);
+export default function CustomCard({
+  handleRequiredSwitch,
+  deleteQuestion,
+  duplicateCard,
+  ...rest
+}) {
+  const { question } = rest;
   return (
     <Card>
-      <CardHeader
+      {/* <CardHeader
         avatar={<Avatar sx={{ bgcolor: red[500] }}>Q</Avatar>}
         title="Question"
-      />
+      /> */}
       <CardContent>
         <CustomCardContent {...rest} />
       </CardContent>
@@ -30,10 +34,16 @@ export default function CustomCard({ ...rest }) {
       <CardActions disableSpacing>
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <IconButton aria-label="Duplicate">
+            <IconButton
+              aria-label="Duplicate"
+              onClick={() => duplicateCard(question.questionId)}
+            >
               <ContentCopyIcon />
             </IconButton>
-            <IconButton aria-label="Delete">
+            <IconButton
+              aria-label="Delete"
+              onClick={() => deleteQuestion(question.questionId)}
+            >
               <DeleteIcon />
             </IconButton>
           </Grid>

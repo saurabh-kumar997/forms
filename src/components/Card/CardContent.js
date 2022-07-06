@@ -10,7 +10,15 @@ import React from "react";
 import CustomDatePicker from "../Date";
 import Select from "../Select";
 
-const CustomCardContent = ({ options, question, handleChange, flags }) => {
+const CustomCardContent = ({
+  options,
+  question,
+  handleChange,
+  flags,
+  handleMcqOptions,
+  handleMcqOthers,
+  handleDropdownOptions,
+}) => {
   return (
     <>
       <Grid container spacing={2} sx={{ mb: 2 }}>
@@ -71,19 +79,57 @@ const CustomCardContent = ({ options, question, handleChange, flags }) => {
       </Grid>
       {flags.mcq && (
         <Grid container sx={{ mb: 2 }}>
-          <Grid item xs={12} sm={12} md={6}>
+          <Grid item xs={12} sm={12} md={8}>
+            {question.options.map((it, key) =>
+              it.label === "Others" ? (
+                <Grid item xs={12} sm={12} md={8}>
+                  <TextField
+                    type="text"
+                    required
+                    placeholder={`Others`}
+                    fullWidth
+                    disabled
+                  />
+                </Grid>
+              ) : (
+                <Grid item xs={12} sm={12} md={8}>
+                  <TextField
+                    type="text"
+                    required
+                    placeholder={`Option ${key + 1}`}
+                    fullWidth
+                  />
+                </Grid>
+              )
+            )}
+          </Grid>
+          <Grid item xs={12} sm={12} md={8}>
             <Stack direction={"row"} spacing={2} sx={{ alignItems: "center" }}>
-              <Button variant="outlined">Add Option</Button>
+              <Button variant="outlined" onClick={handleMcqOptions}>
+                Add Option
+              </Button>
               <p>OR</p>
-              <Button>Add "Others"</Button>
+              <Button onClick={handleMcqOthers}>Add "Others"</Button>
             </Stack>
           </Grid>
         </Grid>
       )}
       {flags.dropdown && (
         <Grid container sx={{ mb: 2 }}>
+          {question.options.map((it, key) => (
+            <Grid item xs={12} sm={12} md={8}>
+              <TextField
+                type="text"
+                required
+                placeholder={`Option ${key + 1}`}
+                fullWidth
+              />
+            </Grid>
+          ))}
           <Grid item xs={12} sm={12} md={6}>
-            <Button variant="outlined">Add Option</Button>
+            <Button variant="outlined" onClick={handleDropdownOptions}>
+              Add Option
+            </Button>
           </Grid>
         </Grid>
       )}
