@@ -9,6 +9,8 @@ import {
 import React from "react";
 import CustomDatePicker from "../Date";
 import Select from "../Select";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
 
 const CustomCardContent = ({
   options,
@@ -30,6 +32,7 @@ const CustomCardContent = ({
             label={"Question"}
             fullWidth
             value={question.question}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={3}>
@@ -50,6 +53,7 @@ const CustomCardContent = ({
           label={"Description"}
           fullWidth
           value={question.description}
+          onChange={handleChange}
         />
       </Grid>
 
@@ -80,28 +84,35 @@ const CustomCardContent = ({
       {flags.mcq && (
         <Grid container sx={{ mb: 2 }}>
           <Grid item xs={12} sm={12} md={8}>
-            {question.options.map((it, key) =>
-              it.label === "Others" ? (
-                <Grid item xs={12} sm={12} md={8}>
-                  <TextField
-                    type="text"
-                    required
-                    placeholder={`Others`}
-                    fullWidth
-                    disabled
-                  />
+            {question.options.map((it, key) => (
+              <Grid container alignItems={"center"}>
+                {it.label === "Others" ? (
+                  <Grid item>
+                    <TextField
+                      type="text"
+                      required
+                      placeholder={`Others`}
+                      fullWidth
+                      disabled
+                    />
+                  </Grid>
+                ) : (
+                  <Grid item>
+                    <TextField
+                      type="text"
+                      required
+                      placeholder={`Option ${key + 1}`}
+                      fullWidth
+                    />
+                  </Grid>
+                )}
+                <Grid item>
+                  <IconButton aria-label="Delete" color="primary">
+                    <DeleteIcon />
+                  </IconButton>
                 </Grid>
-              ) : (
-                <Grid item xs={12} sm={12} md={8}>
-                  <TextField
-                    type="text"
-                    required
-                    placeholder={`Option ${key + 1}`}
-                    fullWidth
-                  />
-                </Grid>
-              )
-            )}
+              </Grid>
+            ))}
           </Grid>
           <Grid item xs={12} sm={12} md={8}>
             <Stack direction={"row"} spacing={2} sx={{ alignItems: "center" }}>
@@ -116,16 +127,25 @@ const CustomCardContent = ({
       )}
       {flags.dropdown && (
         <Grid container sx={{ mb: 2 }}>
-          {question.options.map((it, key) => (
-            <Grid item xs={12} sm={12} md={8}>
-              <TextField
-                type="text"
-                required
-                placeholder={`Option ${key + 1}`}
-                fullWidth
-              />
-            </Grid>
-          ))}
+          <Grid item xs={12} sm={12} md={8}>
+            {question.options.map((it, key) => (
+              <Grid container alignItems="center">
+                <Grid item>
+                  <TextField
+                    type="text"
+                    required
+                    placeholder={`Option ${key + 1}`}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item>
+                  <IconButton aria-label="Delete" color="primary">
+                    <DeleteIcon />
+                  </IconButton>
+                </Grid>
+              </Grid>
+            ))}
+          </Grid>
           <Grid item xs={12} sm={12} md={6}>
             <Button variant="outlined" onClick={handleDropdownOptions}>
               Add Option

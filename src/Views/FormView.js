@@ -6,6 +6,7 @@ import { options } from "./Costant";
 import { v4 as uuidv4 } from "uuid";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import usePrevious from "./Refs";
 
 const FormView = () => {
   //state
@@ -104,6 +105,20 @@ const FormView = () => {
     }
   }, [question.type]);
 
+  let prevQuestionState = usePrevious(question);
+
+  useEffect(() => {
+    if (question.questionId !== "" && prevQuestionState.questionId !== "") {
+      let index = questionList.findIndex(
+        (it) => it.questionId === prevQuestionState.questionId
+      );
+      if (index > -1) {
+        questionList[index] = { ...prevQuestionState };
+        setQuestionList([...questionList]);
+      }
+    }
+  }, [question.questionId]);
+
   //Events
   const handleChange = (e) => {
     setQuestion((prevState) => ({
@@ -126,10 +141,16 @@ const FormView = () => {
   };
 
   const duplicateCard = (qId) => {
-    // let index = questionList.findIndex((it) => it.questionId === qId);
-    // question.questionId = uuidv4();
-    // questionList.splice(index, 0, question);
-    // setQuestionList([...questionList]);
+    let index = questionList.findIndex((it) => it.questionId === qId);
+
+    let ques = {
+      ...questionList[index],
+      questionId: uuidv4(),
+    };
+
+    questionList.splice(index + 1, 0, { ...ques });
+    setQuestionList([...questionList]);
+    setQuestion(ques);
   };
 
   const handleViewCardClick = (qId) => {
@@ -162,8 +183,32 @@ const FormView = () => {
     setQuestion((prevState) => ({ ...prevState, options: opt }));
   };
 
+  const handleAddQuestion = () => {
+    let ques = {
+      questionId: uuidv4(),
+      question: "",
+      type: "",
+      description: "",
+      options: [],
+      isRequired: false,
+    };
+
+    let index = questionList.findIndex(
+      (it) => it.questionId === question.questionId
+    );
+
+    if (index === -1) {
+      setQuestionList([...questionList, { ...ques }]);
+      setQuestion(ques);
+    } else {
+      questionList.splice(index + 1, 0, { ...ques });
+      setQuestionList([...questionList]);
+      setQuestion(ques);
+    }
+  };
+
   return (
-    <Grid container justifyContent={"center"}>
+    <Grid container justifyContent="flex-start">
       <Grid item>
         <Grid container justifyContent="center" rowSpacing={2}>
           <Grid item xs={12} md={8} sm={12}>
@@ -187,6 +232,7 @@ const FormView = () => {
             {questionList.map((item) =>
               question.questionId === item.questionId ? (
                 <CustomCard
+                  key={item.questionId}
                   options={options}
                   handleChange={handleChange}
                   question={question}
@@ -215,6 +261,7 @@ const FormView = () => {
           color="primary"
           aria-label="add"
           sx={{ position: "fixed" }}
+          onClick={handleAddQuestion}
         >
           <AddIcon />
         </Fab>
