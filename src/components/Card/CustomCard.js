@@ -1,18 +1,14 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
-import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
-import { red } from "@mui/material/colors";
 import CustomSwitch from "../Switch";
-import Input from "../Input";
-import { Divider, Grid } from "@mui/material";
+import { Avatar, CardHeader, Divider, Grid, Tooltip } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import Select from "../Select";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CustomCardContent from "./CardContent";
+import { red } from "@mui/material/colors";
 
 export default function CustomCard({
   handleRequiredSwitch,
@@ -22,11 +18,11 @@ export default function CustomCard({
 }) {
   const { question } = rest;
   return (
-    <Card>
-      {/* <CardHeader
+    <Card sx={{ margin: "15px" }}>
+      <CardHeader
         avatar={<Avatar sx={{ bgcolor: red[500] }}>Q</Avatar>}
         title="Question"
-      /> */}
+      />
       <CardContent>
         <CustomCardContent {...rest} />
       </CardContent>
@@ -34,18 +30,22 @@ export default function CustomCard({
       <CardActions disableSpacing>
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <IconButton
-              aria-label="Duplicate"
-              onClick={() => duplicateCard(question.questionId)}
-            >
-              <ContentCopyIcon />
-            </IconButton>
-            <IconButton
-              aria-label="Delete"
-              onClick={() => deleteQuestion(question.questionId)}
-            >
-              <DeleteIcon />
-            </IconButton>
+            <Tooltip title="Duplicate" placement="bottom">
+              <IconButton
+                aria-label="Duplicate"
+                onClick={() => duplicateCard(question.questionId)}
+              >
+                <ContentCopyIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete" placement="bottom">
+              <IconButton
+                aria-label="Delete"
+                onClick={() => deleteQuestion(question.questionId)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
           </Grid>
           <Divider orientation="vertical" flexItem />
           <Grid item>

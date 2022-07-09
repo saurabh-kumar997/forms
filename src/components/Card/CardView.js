@@ -4,12 +4,11 @@ import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import Avatar from "@mui/material/Avatar";
 import { red } from "@mui/material/colors";
-import CustomCardContent from "./CardContent";
 import { Grid, Typography } from "@mui/material";
 
 export default function CustomCardView({ question, onClick }) {
   return (
-    <Card onClick={onClick}>
+    <Card onClick={onClick} sx={{ margin: "15px" }}>
       <CardHeader
         avatar={<Avatar sx={{ bgcolor: red[500] }}>Q</Avatar>}
         title="Question"

@@ -6,7 +6,7 @@ import MyRoutes from "./Routes";
 
 function App() {
   return (
-    <div>
+    <div className="App">
       <BrowserRouter>
         <MyRoutes />
       </BrowserRouter>

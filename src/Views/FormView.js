@@ -1,4 +1,4 @@
-import { Grid, TextField } from "@mui/material";
+import { Drawer, Grid, Stack, TextField, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CustomCardView from "../components/Card/CardView";
 import CustomCard from "../components/Card/CustomCard";
@@ -7,6 +7,14 @@ import { v4 as uuidv4 } from "uuid";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import usePrevious from "./Refs";
+import {
+  AutoAwesome,
+  Delete,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
+import Preview from "./Preview";
+import Input from "../components/Input";
 
 const FormView = () => {
   //state
@@ -19,6 +27,11 @@ const FormView = () => {
     isRequired: false,
   });
 
+  const [formDetails, setFormDetails] = useState({
+    title: "",
+    description: "",
+  });
+
   const [flags, setFlags] = useState({
     shortAnswer: false,
     longAnswer: false,
@@ -27,13 +40,16 @@ const FormView = () => {
     dropdown: false,
   });
 
+  const [visibility, setVisibility] = useState(false);
+  const [preview, setPreview] = useState(false);
+
   const [questionList, setQuestionList] = useState([
     {
       questionId: "1",
       question: "Question 1",
       type: "",
       description: "",
-      options: [1],
+      options: [],
       isRequired: false,
     },
     {
@@ -102,6 +118,16 @@ const FormView = () => {
           shortAnswer: false,
         });
         break;
+
+      default:
+        setFlags({
+          longAnswer: false,
+          mcq: false,
+          date: false,
+          dropdown: false,
+          shortAnswer: false,
+        });
+        break;
     }
   }, [question.type]);
 
@@ -117,9 +143,21 @@ const FormView = () => {
         setQuestionList([...questionList]);
       }
     }
-  }, [question.questionId]);
+  }, [question.questionId, preview]);
+
+  useEffect(() => {
+    setVisibility(questionList.length > 0);
+  }, [questionList.length]);
 
   //Events
+
+  const handleFormDetails = (e) => {
+    setFormDetails((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   const handleChange = (e) => {
     setQuestion((prevState) => ({
       ...prevState,
@@ -129,6 +167,7 @@ const FormView = () => {
   };
 
   const handleRequiredSwitch = (e) => {
+    debugger;
     setQuestion((prevState) => ({
       ...prevState,
       isRequired: e.target.checked,
@@ -141,6 +180,7 @@ const FormView = () => {
   };
 
   const duplicateCard = (qId) => {
+    debugger;
     let index = questionList.findIndex((it) => it.questionId === qId);
 
     let ques = {
@@ -155,7 +195,7 @@ const FormView = () => {
 
   const handleViewCardClick = (qId) => {
     let quesData = questionList.filter((it) => it.questionId === qId)[0];
-    setQuestion(quesData);
+    setQuestion({ ...quesData });
   };
 
   const handleMcqOptions = () => {
@@ -207,66 +247,155 @@ const FormView = () => {
     }
   };
 
+  const handleOptionsChange = (e, optionId) => {
+    let { options } = question;
+    options[optionId] = { label: e.target.value, value: e.target.value };
+    setQuestion((prevState) => ({ ...prevState, options: [...options] }));
+  };
+
+  const handleDeleteOption = (optionId) => {
+    question.options.splice(optionId, 1);
+    setQuestion({ ...question });
+  };
+
+  const handlePreview = () => {
+    setPreview((prevState) => !prevState);
+  };
+
+  const handleDiscard = () => {
+    if (window.confirm("Are you sure you want to discard everything?")) {
+      setQuestion({
+        questionId: "",
+        question: "",
+        type: "",
+        description: "",
+        options: [],
+        isRequired: false,
+      });
+
+      setQuestionList([]);
+      setFormDetails({
+        title: "",
+        description: "",
+      });
+
+      setFlags({
+        shortAnswer: false,
+        longAnswer: false,
+        mcq: false,
+        date: false,
+        dropdown: false,
+      });
+      return;
+    }
+  };
   return (
-    <Grid container justifyContent="flex-start">
-      <Grid item>
-        <Grid container justifyContent="center" rowSpacing={2}>
-          <Grid item xs={12} md={8} sm={12}>
-            <TextField
-              variant="filled"
-              fullWidth
-              name="title"
-              label="Title"
-              required
-            />
-          </Grid>
-          <Grid item xs={12} md={8} sm={12}>
-            <TextField
-              variant="filled"
-              label="Description"
-              fullWidth
-              name="description"
-            />
-          </Grid>
-          <Grid item xs={12} md={8} sm={12}>
-            {questionList.map((item) =>
-              question.questionId === item.questionId ? (
-                <CustomCard
-                  key={item.questionId}
-                  options={options}
-                  handleChange={handleChange}
-                  question={question}
-                  flags={flags}
-                  handleRequiredSwitch={handleRequiredSwitch}
-                  deleteQuestion={deleteQuestion}
-                  duplicateCard={duplicateCard}
-                  handleMcqOthers={handleMcqOthers}
-                  handleMcqOptions={handleMcqOptions}
-                  handleDropdownOptions={handleDropdownOptions}
-                />
-              ) : (
-                <CustomCardView
-                  key={item.questionId}
-                  question={item}
-                  onClick={() => handleViewCardClick(item.questionId)}
-                />
-              )
-            )}
+    <>
+      <Grid container justifyContent="flex-start">
+        <Grid item>
+          <Grid container justifyContent="center" rowSpacing={2}>
+            <Grid item xs={12} md={8} sm={12}>
+              <Input
+                variant="filled"
+                name="title"
+                label="Title"
+                required
+                value={formDetails.title}
+                onChange={handleFormDetails}
+              />
+            </Grid>
+            <Grid item xs={12} md={8} sm={12}>
+              <Input
+                variant="filled"
+                label="Description"
+                name="description"
+                value={formDetails.description}
+                onChange={handleFormDetails}
+              />
+            </Grid>
+            <Grid item xs={12} md={8} sm={12}>
+              {questionList.map((item) =>
+                question.questionId === item.questionId ? (
+                  <CustomCard
+                    key={item.questionId}
+                    options={options}
+                    handleChange={handleChange}
+                    question={question}
+                    flags={flags}
+                    handleRequiredSwitch={handleRequiredSwitch}
+                    deleteQuestion={deleteQuestion}
+                    duplicateCard={duplicateCard}
+                    handleMcqOthers={handleMcqOthers}
+                    handleMcqOptions={handleMcqOptions}
+                    handleDropdownOptions={handleDropdownOptions}
+                    handleDeleteOption={handleDeleteOption}
+                    handleOptionsChange={handleOptionsChange}
+                  />
+                ) : (
+                  <CustomCardView
+                    key={item.questionId}
+                    question={item}
+                    onClick={() => handleViewCardClick(item.questionId)}
+                  />
+                )
+              )}
+            </Grid>
           </Grid>
         </Grid>
+        <Grid item>
+          <Stack sx={{ position: "fixed" }} direction="column" spacing={2}>
+            <Tooltip title="Add Question" placement="right">
+              <Fab
+                size="small"
+                color="primary"
+                aria-label="add"
+                onClick={handleAddQuestion}
+              >
+                <AddIcon />
+              </Fab>
+            </Tooltip>
+            <Tooltip title="Preview" placement="right">
+              <Fab
+                size="small"
+                color="primary"
+                aria-label="add"
+                onClick={handlePreview}
+                disabled={!visibility}
+              >
+                {visibility ? <Visibility /> : <VisibilityOff />}
+              </Fab>
+            </Tooltip>
+            <Tooltip title="Discard" placement="right">
+              <Fab
+                size="small"
+                color="error"
+                aria-label="add"
+                onClick={handleDiscard}
+                disabled={!visibility}
+              >
+                <Delete />
+              </Fab>
+            </Tooltip>
+            <Tooltip title="See Sample" placement="right">
+              <Fab size="small" color="warning" aria-label="add">
+                <AutoAwesome />
+              </Fab>
+            </Tooltip>
+          </Stack>
+        </Grid>
       </Grid>
-      <Grid item>
-        <Fab
-          size="small"
-          color="primary"
-          aria-label="add"
-          sx={{ position: "fixed" }}
-          onClick={handleAddQuestion}
-        >
-          <AddIcon />
-        </Fab>
+      <Grid container>
+        <Grid item>
+          <Drawer open={preview} onClose={handlePreview} anchor={"right"}>
+            <Preview
+              handleClose={handlePreview}
+              questionList={questionList}
+              formDetails={formDetails}
+            />
+          </Drawer>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 

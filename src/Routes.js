@@ -8,7 +8,7 @@ const MyRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route path="/forms" element={<FormView />} />
+        <Route path="forms" element={<FormView />} />
       </Route>
     </Routes>
   );

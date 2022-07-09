@@ -12,6 +12,7 @@ const Select = ({
   helperText,
   label,
   required,
+  ...rest
 }) => {
   return (
     <TextField
@@ -24,6 +25,7 @@ const Select = ({
       error={error}
       name={name}
       required={required}
+      {...rest}
     >
       {options.map((option) => (
         <MenuItem key={option.value} value={option.value}>

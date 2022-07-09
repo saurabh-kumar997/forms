@@ -4,7 +4,14 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import PropTypes from "prop-types";
 
-const CustomSwitch = ({ label, labelPlacement, onChange, checked, value }) => {
+const CustomSwitch = ({
+  label,
+  labelPlacement,
+  onChange,
+  checked,
+  value,
+  ...rest
+}) => {
   return (
     <FormControl component="fieldset">
       <FormControlLabel
@@ -14,6 +21,7 @@ const CustomSwitch = ({ label, labelPlacement, onChange, checked, value }) => {
         labelPlacement={labelPlacement}
         checked={checked}
         onChange={onChange}
+        {...rest}
       />
     </FormControl>
   );
@@ -22,7 +30,7 @@ CustomSwitch.propTpes = {
   label: PropTypes.string,
   labelPlacement: PropTypes.oneOf(["bottom", "end", "start", "top"]),
   onChange: PropTypes.func,
-  checked: PropTypes.bool,
+  checked: PropTypes.bool.isRequired,
   value: PropTypes.string,
 };
 
@@ -30,7 +38,6 @@ CustomSwitch.defaultProps = {
   label: "",
   labelPlacement: "start",
   onChange: () => {},
-  checked: false,
   value: "",
 };
 export default CustomSwitch;

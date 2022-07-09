@@ -11,7 +11,7 @@ const Input = ({
   error,
   label,
   required,
-  rest,
+  ...rest
 }) => {
   return (
     <TextField

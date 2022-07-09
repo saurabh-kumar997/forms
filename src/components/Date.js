@@ -5,13 +5,21 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import PropTypes from "prop-types";
 
-const CustomDatePicker = ({ label, value, required, error, onChange }) => {
+const CustomDatePicker = ({
+  label,
+  value,
+  required,
+  error,
+  onChange,
+  disabled,
+}) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         label={label}
         value={value}
         onChange={onChange}
+        disabled={disabled}
         renderInput={(params) => (
           <TextField {...params} required={required} error={error} />
         )}

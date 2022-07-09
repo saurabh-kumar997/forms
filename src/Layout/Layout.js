@@ -6,9 +6,13 @@ import Typography from "@mui/material/Typography";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 export default function Layout({ children }) {
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    navigate("/forms");
+  }, []);
   return (
     <React.Fragment>
       <CssBaseline />

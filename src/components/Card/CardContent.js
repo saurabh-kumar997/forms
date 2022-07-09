@@ -11,6 +11,7 @@ import CustomDatePicker from "../Date";
 import Select from "../Select";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
+import Input from "../Input";
 
 const CustomCardContent = ({
   options,
@@ -20,17 +21,18 @@ const CustomCardContent = ({
   handleMcqOptions,
   handleMcqOthers,
   handleDropdownOptions,
+  handleDeleteOption,
+  handleOptionsChange,
 }) => {
   return (
     <>
       <Grid container spacing={2} sx={{ mb: 2 }}>
         <Grid item xs={12} sm={12} md={9}>
-          <TextField
+          <Input
             name="question"
             type="text"
             required
             label={"Question"}
-            fullWidth
             value={question.question}
             onChange={handleChange}
           />
@@ -46,12 +48,11 @@ const CustomCardContent = ({
         </Grid>
       </Grid>
       <Grid item xs={12} sm={12} md={12} sx={{ mb: 2 }}>
-        <TextField
+        <Input
           name="description"
           type="text"
           required
           label={"Description"}
-          fullWidth
           value={question.description}
           onChange={handleChange}
         />
@@ -60,24 +61,12 @@ const CustomCardContent = ({
       <Grid container sx={{ mb: 2 }}>
         {flags.shortAnswer && (
           <Grid item xs={12} sm={12} md={5}>
-            <TextField
-              type="text"
-              required
-              label={"Short answer"}
-              disabled
-              fullWidth
-            />
+            <Input type="text" required label={"Short answer"} disabled />
           </Grid>
         )}
         {flags.longAnswer && (
           <Grid item xs={12} sm={12} md={8}>
-            <TextField
-              type="text"
-              required
-              label={"Long answer"}
-              disabled
-              fullWidth
-            />
+            <Input type="text" required label={"Long answer"} disabled />
           </Grid>
         )}
       </Grid>
@@ -85,29 +74,33 @@ const CustomCardContent = ({
         <Grid container sx={{ mb: 2 }}>
           <Grid item xs={12} sm={12} md={8}>
             {question.options.map((it, key) => (
-              <Grid container alignItems={"center"}>
+              <Grid container alignItems={"center"} key={`Option ${key + 1}`}>
                 {it.label === "Others" ? (
                   <Grid item>
-                    <TextField
+                    <Input
                       type="text"
                       required
                       placeholder={`Others`}
-                      fullWidth
                       disabled
                     />
                   </Grid>
                 ) : (
                   <Grid item>
-                    <TextField
+                    <Input
                       type="text"
                       required
                       placeholder={`Option ${key + 1}`}
-                      fullWidth
+                      value={it.value}
+                      onChange={(e) => handleOptionsChange(e, key)}
                     />
                   </Grid>
                 )}
                 <Grid item>
-                  <IconButton aria-label="Delete" color="primary">
+                  <IconButton
+                    aria-label="Delete"
+                    color="primary"
+                    onClick={() => handleDeleteOption(key)}
+                  >
                     <DeleteIcon />
                   </IconButton>
                 </Grid>
@@ -129,17 +122,22 @@ const CustomCardContent = ({
         <Grid container sx={{ mb: 2 }}>
           <Grid item xs={12} sm={12} md={8}>
             {question.options.map((it, key) => (
-              <Grid container alignItems="center">
+              <Grid container alignItems="center" key={`Option ${key + 1}`}>
                 <Grid item>
-                  <TextField
+                  <Input
                     type="text"
                     required
                     placeholder={`Option ${key + 1}`}
-                    fullWidth
+                    value={it.value}
+                    onChange={(e) => handleOptionsChange(e, key)}
                   />
                 </Grid>
                 <Grid item>
-                  <IconButton aria-label="Delete" color="primary">
+                  <IconButton
+                    aria-label="Delete"
+                    color="primary"
+                    onClick={() => handleDeleteOption(key)}
+                  >
                     <DeleteIcon />
                   </IconButton>
                 </Grid>
@@ -156,7 +154,7 @@ const CustomCardContent = ({
       {flags.date && (
         <Grid container sx={{ mb: 2 }}>
           <Grid item xs={12} sm={12} md={4}>
-            <CustomDatePicker />
+            <CustomDatePicker disabled />
           </Grid>
         </Grid>
       )}
