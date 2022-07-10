@@ -1,0 +1,67 @@
+{
+  "titlle": "Sample Form",
+  "description": "Sample for view",
+  "questions": [
+    {
+      "questionId": "f4363ab8-5b2a-43bc-b890-2ceb751c5afa",
+      "question": "Name",
+      "type": "SimpleText",
+      "description": "",
+      "options": [],
+      "isRequired": true
+    },
+    {
+      "questionId": "5c8b2e09-eace-466a-ba33-8831026ce0e1",
+      "question": "Age",
+      "type": "SimpleText",
+      "description": "",
+      "options": [],
+      "isRequired": true
+    },
+    {
+      "questionId": "9c2695c2-3829-4b20-8856-e2a073506e8f",
+      "question": "Gender",
+      "type": "MultipleChoice",
+      "description": "",
+      "options": [
+        { "label": "Male", "value": "Male" },
+        { "label": "Female", "value": "Female" },
+        { "label": "Others", "value": "Others" }
+      ],
+      "isRequired": true
+    },
+    {
+      "questionId": "c6d7f1ad-6a7d-4dca-9b8c-b7be9e29e8d3",
+      "question": "Notice Period",
+      "type": "Date",
+      "description": "",
+      "options": [],
+      "isRequired": true
+    },
+    {
+      "questionId": "8c15c7d4-b165-47ad-9167-d73fd4b97b79",
+      "question": "Major",
+      "type": "Dropdown",
+      "description": "",
+      "options": [
+        { "label": "Computer Science", "value": "Computer Science" },
+        { "label": "Mechanical", "value": "Mechanical" },
+        { "label": "Electrical", "value": "Electrical" },
+        {
+          "label": "Electronics and Communication",
+          "value": "Electronics and Communication"
+        },
+        { "label": "Biotechnology", "value": "Biotechnology" }
+      ],
+      "isRequired": true
+    },
+    {
+      "questionId": "04964c0f-083c-4853-966e-135f463f95cd",
+      "question": "Link",
+      "type": "SimpleText",
+      "description": "Paste your website link here...",
+      "options": [],
+      "isRequired": true
+    }
+  ]
+}

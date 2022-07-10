@@ -15,6 +15,7 @@ import {
 } from "@mui/icons-material";
 import Preview from "./Preview";
 import Input from "../components/Input";
+import data from "../SampleData.json";
 
 const FormView = () => {
   //state
@@ -289,12 +290,17 @@ const FormView = () => {
       return;
     }
   };
+
+  const handleLoadSampleData = () => {
+    setFormDetails({ title: data.titlle, description: data.description });
+    setQuestionList(data.questions);
+  };
   return (
     <>
-      <Grid container justifyContent="flex-start">
-        <Grid item>
-          <Grid container justifyContent="center" rowSpacing={2}>
-            <Grid item xs={12} md={8} sm={12}>
+      <Grid container>
+        <Grid item xs={10} md={8} sm={10}>
+          <Grid container rowSpacing={2}>
+            <Grid item xs={8} md={8} sm={8}>
               <Input
                 variant="filled"
                 name="title"
@@ -304,7 +310,7 @@ const FormView = () => {
                 onChange={handleFormDetails}
               />
             </Grid>
-            <Grid item xs={12} md={8} sm={12}>
+            <Grid item xs={8} md={8} sm={8}>
               <Input
                 variant="filled"
                 label="Description"
@@ -313,7 +319,7 @@ const FormView = () => {
                 onChange={handleFormDetails}
               />
             </Grid>
-            <Grid item xs={12} md={8} sm={12}>
+            <Grid item xs={8} md={8} sm={8}>
               {questionList.map((item) =>
                 question.questionId === item.questionId ? (
                   <CustomCard
@@ -342,7 +348,7 @@ const FormView = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item>
+        <Grid item xs={2} md={4} sm={2}>
           <Stack sx={{ position: "fixed" }} direction="column" spacing={2}>
             <Tooltip title="Add Question" placement="right">
               <Fab
@@ -378,7 +384,7 @@ const FormView = () => {
             </Tooltip>
             <Tooltip title="See Sample" placement="right">
               <Fab size="small" color="warning" aria-label="add">
-                <AutoAwesome />
+                <AutoAwesome onClick={handleLoadSampleData} />
               </Fab>
             </Tooltip>
           </Stack>

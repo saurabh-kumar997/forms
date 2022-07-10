@@ -19,7 +19,7 @@ const CustomRadio = ({
 }) => {
   return (
     <FormControl error={error} required={required}>
-      <FormLabel>{label}</FormLabel>
+      {/* <FormLabel>{label}</FormLabel> */}
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
         defaultValue={defaultValue}
